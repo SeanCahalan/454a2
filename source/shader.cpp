@@ -196,8 +196,8 @@ int main( int argc, char **argv )
 
   // If you get an error on running, try the other glfwWindowHint below
   
-  glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_ES_API ); // use this for laptops
-  //glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_API ); // use this for CasLab
+  //glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_ES_API ); // use this for laptops
+  glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_API ); // use this for CasLab
 
 
   glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
