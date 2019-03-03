@@ -42,5 +42,15 @@ void main()
   
   //fragLaplacian = -1.0 * texture( depthSampler, texCoordOffset ) + ...
 
-  fragLaplacian = vec3( 0.1, 0.2, 0.3 );
+  //fragLaplacian = vec3( 0.1, 0.2, 0.3 );
+  fragLaplacian = (-1.0 * texture( depthSampler, vec2(texCoords.x - texCoordInc.x, texCoords.y - texCoordInc.y)) +
+    -1.0 * texture( depthSampler, vec2(texCoords.x, texCoords.y - texCoordInc.y)) +
+    -1.0 * texture( depthSampler, vec2(texCoords.x + texCoordInc.x, texCoords.y - texCoordInc.y)) +
+    -1.0 * texture( depthSampler, vec2(texCoords.x - texCoordInc.x, texCoords.y)) +
+    8.0 * texture( depthSampler, vec2(texCoords.x, texCoords.y)) +
+    -1.0 * texture( depthSampler, vec2(texCoords.x + texCoordInc.x, texCoords.y)) +
+    -1.0 * texture( depthSampler, vec2(texCoords.x - texCoordInc.x, texCoords.y + texCoordInc.y)) +
+    -1.0 * texture( depthSampler, vec2(texCoords.x, texCoords.y + texCoordInc.y)) + 
+    -1.0 * texture( depthSampler, vec2(texCoords.x + texCoordInc.x, texCoords.y + texCoordInc.y))).xyz;
+ 
 }

@@ -30,15 +30,24 @@ void main()
 
   // YOUR CODE HERE
 
+  mediump float depth = texture2D( depthSampler, texCoords).r;
+  mediump float Laplacian = texture2D( laplacianSampler, texCoords).r;
+
   // [1 mark] Discard the fragment if it is a background pixel not
   // near the silhouette of the object.
 
   // YOUR CODE HERE
 
+  if (depth == 1.0)
+    outputColour = vec4( 0.0, 0.0, 0.0, 0.0 );
+
   // [0 marks] Look up value for the colour and normal.  Use the RGB
   // components of the texture as texture2D( ... ).rgb or texture2D( ... ).xyz.
 
   // YOUR CODE HERE
+
+  mediump vec3 colour = texture2D(colourSampler, texCoords).rgb;
+  mediump vec3 normal = texture2D(normalSampler, texCoords).xyz;
 
   // [2 marks] Compute Cel shading, in which the diffusely shaded
   // colour is quantized into four possible values.  Do not allow the
@@ -51,6 +60,21 @@ void main()
 
   // YOUR CODE HERE
 
+  mediump float NdotL = dot( normalize(normal), lightDir );
+  mediump vec3 diffuseColour = colour;
+  mediump vec3 celColour = vec3(1.0, 1.0, 1.0);
+  if (abs(NdotL) >= 0.2) // radians
+    diffuseColour = NdotL * colour;
+
+    if (NdotL > 0.95)
+      celColour = 0.95 * diffuseColour; // 0.95 - 1.00  ->  0.95
+    else if (NdotL > 0.70)
+      celColour = 0.70 * diffuseColour; // 0.70 - 0.95  ->  0.70
+    else if (NdotL > 0.40)
+      celColour = 0.40 * diffuseColour; // 0.40 - 0.70  ->  0.40
+    else
+      celColour = 0.10 * diffuseColour; // 0.00 - 0.40  ->  0.10
+  
   // [2 marks] Count number of fragments in the 3x3 neighbourhood of
   // this fragment with a Laplacian that is less than -0.1.  These are
   // the edge fragments.  Your code should use the 'kernelRadius'
@@ -61,6 +85,17 @@ void main()
   // around this fragment.
 
   const int kernelRadius = 1;
+  mediump int count = 0;
+
+  for(mediump int i = -kernelRadius; i<kernelRadius; i++){
+    for(mediump int j = -kernelRadius; j<kernelRadius; j++){
+      if(texture2D( 
+          laplacianSampler, vec2((texCoords.x + float(i)*texCoordInc.x), (texCoords.y + float(j)*texCoordInc.y))
+        ).x < -0.1
+      )
+        count++;
+    }
+  }
 
   // YOUR CODE HERE
 
@@ -74,5 +109,8 @@ void main()
 
   // YOUR CODE HERE
 
-  outputColour = vec4( 1.0, 0.0, 1.0, 1.0 );
+  if(count > 0)
+    outputColour = vec4(0.0, 0.0, 0.0, 1.0);
+  else
+    outputColour = vec4( celColour, 1.0 );
 }

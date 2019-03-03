@@ -19,5 +19,5 @@ void main()
   // map this to the range [0,1] of texture coordinates.
 
   // texCoords = vec2( 0.0, 0.0 );     // YOUR CODE HERE
-  texCoords = vec2( 1-(1-vertPosition.x)/2, 1-(1-vertPosition.y)/2);
+  texCoords = vec2( ((1.0+vertPosition.x)/2.0), ((1.0+vertPosition.y)/2.0));
 }
