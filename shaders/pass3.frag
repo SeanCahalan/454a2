@@ -62,9 +62,10 @@ void main()
 
   mediump float NdotL = dot( normalize(normal), lightDir );
   
-  if (NdotL < 0.2)
+  if (NdotL < 0.2) // force NdoL to 0.2
     NdotL = 0.2;
 
+  // use numQuanta to fit NdotL to the nearest bin (0.25, 0.50, 0.75, 1.0)
   NdotL = round(float(numQuanta + 1) * NdotL) / 4.0;
   colour = NdotL * colour;
   
@@ -79,6 +80,9 @@ void main()
   // around this fragment.
 
   const int kernelRadius = 1;
+
+  // YOUR CODE HERE
+
   mediump int count = 0;
 
   for(mediump int i = -kernelRadius; i<kernelRadius; i++){
@@ -90,8 +94,6 @@ void main()
         count++;
     }
   }
-
-  // YOUR CODE HERE
 
   // [0 marks] Output the fragment colour.  If there is an edge
   // fragment in the 3x3 neighbourhood of this fragment, output a

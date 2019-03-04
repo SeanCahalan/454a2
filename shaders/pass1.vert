@@ -29,19 +29,16 @@ void main()
 
   // Provide a colour 
 
-  colour = vec3(0.0,1.0,0.0);         // YOUR CODE HERE
+  colour = vec3(0.0,1.0,1.0);         // YOUR CODE HERE
 
   // calculate normal in VCS
 
-  // normal = vec3(0.0,1.0,0.0);         // YOUR CODE HERE
+  // YOUR CODE HERE
   normal = vec3( MV * vec4( vertNormal, 0.0 ) );
 
   // Calculate the depth in [0,1]
+  
+  // YOUR CODE HERE
 
-  // depth = 0.5;                  // YOUR CODE HERE
-  // calc vertex position in CCS
-
-  vec4 ccs_pos = MVP * vec4( vertPosition, 1.0f );
-  gl_Position = ccs_pos;
-  depth = 0.5 * ((ccs_pos.z / ccs_pos.w) + 1.0);
+  depth = 0.5 * ((gl_Position.z / gl_Position.w) + 1.0);
 }
