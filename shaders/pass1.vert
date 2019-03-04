@@ -29,7 +29,7 @@ void main()
 
   // Provide a colour 
 
-  colour = vec3(1.0,0.0,0.0);         // YOUR CODE HERE
+  colour = vec3(0.0,1.0,0.0);         // YOUR CODE HERE
 
   // calculate normal in VCS
 

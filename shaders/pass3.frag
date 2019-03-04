@@ -39,8 +39,8 @@ void main()
   // YOUR CODE HERE
 
   if (depth == 1.0)
-    outputColour = vec4( 0.0, 0.0, 0.0, 0.0 );
-
+    discard;
+  
   // [0 marks] Look up value for the colour and normal.  Use the RGB
   // components of the texture as texture2D( ... ).rgb or texture2D( ... ).xyz.
 
@@ -61,19 +61,13 @@ void main()
   // YOUR CODE HERE
 
   mediump float NdotL = dot( normalize(normal), lightDir );
-  mediump vec3 diffuseColour = colour;
-  mediump vec3 celColour = vec3(1.0, 1.0, 1.0);
-  if (abs(NdotL) >= 0.2) // radians
-    diffuseColour = NdotL * colour;
+  
+  if (NdotL < 0.2)
+    NdotL = 0.2;
 
-    if (NdotL > 0.95)
-      celColour = 0.95 * diffuseColour; // 0.95 - 1.00  ->  0.95
-    else if (NdotL > 0.70)
-      celColour = 0.70 * diffuseColour; // 0.70 - 0.95  ->  0.70
-    else if (NdotL > 0.40)
-      celColour = 0.40 * diffuseColour; // 0.40 - 0.70  ->  0.40
-    else
-      celColour = 0.10 * diffuseColour; // 0.00 - 0.40  ->  0.10
+  NdotL = round(float(numQuanta + 1) * NdotL) / 4.0;
+  colour = NdotL * colour;
+  
   
   // [2 marks] Count number of fragments in the 3x3 neighbourhood of
   // this fragment with a Laplacian that is less than -0.1.  These are
@@ -112,5 +106,5 @@ void main()
   if(count > 0)
     outputColour = vec4(0.0, 0.0, 0.0, 1.0);
   else
-    outputColour = vec4( celColour, 1.0 );
+    outputColour = vec4( colour, 1.0 );
 }
